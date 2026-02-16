@@ -1,12 +1,15 @@
 # =============================================================================
-# EDUIO Test Recorder - Simplified Dockerfile for Coolify
+# EDUIO Test Recorder - Fixed Dockerfile with Prisma Support
 # =============================================================================
 
 FROM node:20-alpine AS base
 
+# Install OpenSSL for Prisma
+RUN apk add --no-cache openssl1.1-compat
+
 # Install dependencies
 FROM base AS deps
-RUN apk add --no-cache libc6-compat python3 make g++
+RUN apk add --no-cache libc6-compat python3 make g++ openssl1.1-compat
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
@@ -35,14 +38,16 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Install Playwright dependencies
+# Install runtime dependencies including OpenSSL 1.1
 RUN apk add --no-cache \
     chromium \
     nss \
     freetype \
     harfbuzz \
     ca-certificates \
-    ttf-freefont
+    ttf-freefont \
+    openssl1.1-compat \
+    libc6-compat
 
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
