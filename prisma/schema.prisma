@@ -1,0 +1,78 @@
+// =============================================================================
+// Database Schema for Test Recorder
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Users (staff members who can record tests)
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("staff") // staff, admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  recordings Recording[]
+  tests      GeneratedTest[]
+}
+
+// Recording sessions
+model Recording {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name        String
+  description String?
+  status      String   @default("recording") // recording, processing, completed, failed
+  
+  // Playwright codegen output
+  playwrightCode String?
+  
+  // Captured metadata
+  startUrl    String?
+  actions     String?  // JSON array of actions
+  screenshots String?  // JSON array of screenshot paths
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  generatedTest GeneratedTest?
+}
+
+// AI-generated tests
+model GeneratedTest {
+  id           String   @id @default(uuid())
+  recordingId  String   @unique
+  recording    Recording @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+  
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name         String
+  testCode     String   // Generated Midscene test code
+  filePath     String   // Where to save in test suite
+  
+  status       String   @default("pending") // pending, approved, rejected
+  reviewNotes  String?
+  
+  approvedBy   String?
+  approvedAt   DateTime?
+  
+  // Metadata from AI analysis
+  aiSummary    String?  // What the test does
+  detectedActions String? // JSON array of detected actions
+  suggestedAssertions String? // JSON array of AI suggestions
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

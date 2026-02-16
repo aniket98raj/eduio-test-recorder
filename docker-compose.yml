@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  test-recorder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eduio-test-recorder
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Gemini API for test generation AND visual assertions
+      MIDSCENE_MODEL_API_KEY: ${MIDSCENE_MODEL_API_KEY}
+      MIDSCENE_MODEL_BASE_URL: https://generativelanguage.googleapis.com/v1beta/openai/
+      MIDSCENE_MODEL_NAME: gemini-2.0-flash
+      MIDSCENE_MODEL_FAMILY: gemini
+      
+      # App settings
+      NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
+      TEST_BASE_URL: https://school.eduio.io
+      
+      # Database
+      DATABASE_URL: file:/app/data/dev.db
+      
+      # Auth
+      JWT_SECRET: ${JWT_SECRET}
+      
+      # Git integration
+      GIT_REPO_PATH: ${GIT_REPO_PATH:-/app/test-suite}
+      GIT_AUTHOR_NAME: Test Recorder Bot
+      GIT_AUTHOR_EMAIL: bot@eduio.io
+      
+      # Allure
+      ALLURE_SERVER_URL: ${ALLURE_SERVER_URL:-http://allure:5050}
+      
+    volumes:
+      - test-recorder-data:/app/data
+      - ${GIT_REPO_PATH:-./test-suite}:/app/test-suite
+    
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+
+volumes:
+  test-recorder-data:
+    driver: local
