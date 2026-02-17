@@ -57,7 +57,7 @@ Create `.env` file:
 ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxx
 
 # Gemini API (reuse from your testing-stack)
-MIDSCENE_MODEL_API_KEY=AIzaSyByolJHu7UQjnmvWlHmkN3Ehat0IBNZXng
+MIDSCENE_MODEL_API_KEY=AIzaSyCsqdBf1PEf-BPmA2bakjaI3UmVmv0DBGc
 
 # App URL
 NEXT_PUBLIC_APP_URL=https://test-recorder.yourdomain.com

@@ -121,7 +121,7 @@ nano .env
 **Only need to set:**
 ```env
 # You already have this!
-MIDSCENE_MODEL_API_KEY=AIzaSyByolJHu7UQjnmvWlHmkN3Ehat0IBNZXng
+MIDSCENE_MODEL_API_KEY=AIzaSyCsqdBf1PEf-BPmA2bakjaI3UmVmv0DBGc
 
 # Your settings
 NEXT_PUBLIC_APP_URL=https://test-recorder.yourdomain.com

@@ -20,7 +20,7 @@ This is the **complete AI test generation system** for your EDUIO platform.
 
 - [ ] Coolify running on Hostinger VPS
 - [ ] Your existing `testing-stack` deployed
-- [ ] Gemini API key (you already have: `AIzaSyByolJHu7UQjnmvWlHmkN3Ehat0IBNZXng`)
+- [ ] Gemini API key (you already have: `AIzaSyCsqdBf1PEf-BPmA2bakjaI3UmVmv0DBGc`)
 - [ ] Git access to your testing-stack repository
 
 **That's it! No additional API keys needed!** ✅
@@ -57,7 +57,7 @@ nano .env
 **Required variables:**
 ```env
 # Your existing Gemini key (from testing-stack)
-MIDSCENE_MODEL_API_KEY=AIzaSyByolJHu7UQjnmvWlHmkN3Ehat0IBNZXng
+MIDSCENE_MODEL_API_KEY=AIzaSyCsqdBf1PEf-BPmA2bakjaI3UmVmv0DBGc
 
 # Your domain
 NEXT_PUBLIC_APP_URL=https://test-recorder.yourdomain.com
