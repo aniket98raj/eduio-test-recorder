@@ -1,13 +1,14 @@
 # =============================================================================
-# EDUIO Test Recorder - Debian-based for Prisma Compatibility
+# EDUIO Test Recorder - Debian-based with Git Support
 # =============================================================================
 
 FROM node:20-slim AS base
 
-# Install OpenSSL and other required libraries
+# Install OpenSSL and git
 RUN apt-get update && apt-get install -y \
     openssl \
     ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
@@ -45,7 +46,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN groupadd --system --gid 1001 nodejs
 RUN useradd --system --uid 1001 nextjs
 
-# Install Chromium for Playwright
+# Install Chromium and git for runtime
 RUN apt-get update && apt-get install -y \
     chromium \
     fonts-liberation \
@@ -55,6 +56,7 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon0 \
     libgbm1 \
     libasound2 \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
