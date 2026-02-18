@@ -32,6 +32,16 @@ export class GitService {
       throw new Error('GIT_REPO_PATH not configured');
     }
 
+    // Configure git to trust this directory (in case entrypoint didn't run)
+    try {
+      await execAsync(`git config --global --add safe.directory "${this.repoPath}"`, {
+        cwd: this.repoPath,
+      });
+    } catch (error) {
+      // Ignore if already configured or fails
+      console.log('Note: Could not configure git safe.directory, may already be set');
+    }
+
     // Determine file path (save to tests/ai-tests/ directory)
     const testDir = path.join(this.repoPath, 'tests', 'ai-tests');
     const filePath = path.join(testDir, fileName);
