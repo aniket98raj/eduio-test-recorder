@@ -73,14 +73,16 @@ COPY --from=builder /app/next.config.js ./next.config.js
 # Create data directory
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app
 
-USER nextjs
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Configure git to trust the mounted testing-stack directory (as nextjs user)
-RUN git config --global --add safe.directory /app/testing-stack
+USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["npm", "start"]
