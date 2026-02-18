@@ -65,7 +65,15 @@ export class GitService {
       }
     );
 
-    console.log(`✅ Test committed: ${fileName}`);
+    // Auto-push to GitHub (if remote is configured)
+    try {
+      await execAsync('git push origin main', {
+        cwd: this.repoPath,
+      });
+      console.log(`✅ Test committed and pushed: ${fileName}`);
+    } catch (error: any) {
+      console.log(`✅ Test committed: ${fileName} (push skipped: ${error.message})`);
+    }
   }
 
   /**
